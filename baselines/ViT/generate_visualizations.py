@@ -143,6 +143,9 @@ if __name__ == "__main__":
     parser.add_argument('--is-ablation', type=bool,
                         default=False,
                         help='')
+    parser.add_argument('--imagenet-validation-path', type=str,
+                        required=True,
+                        help='')
     args = parser.parse_args()
 
     # PATH variables
@@ -192,11 +195,9 @@ if __name__ == "__main__":
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
-        # transforms.Normalize(mean=[0.485, 0.456, 0.406],
-        #                      std=[0.229, 0.224, 0.225])
     ])
 
-    imagenet_ds = ImageNet('path_to_imagenet', split='val', download=False, transform=transform)
+    imagenet_ds = ImageNet(args.imagenet_validation_path, split='val', download=False, transform=transform)
     sample_loader = torch.utils.data.DataLoader(
         imagenet_ds,
         batch_size=args.batch_size,
