@@ -3,3 +3,4 @@ all_good_vis/
 __pycache__
 *.tar
 .idea
+run/
