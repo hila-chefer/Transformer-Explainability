@@ -7,7 +7,7 @@ import argparse
 # Import saliency methods and models
 from misc_functions import *
 
-from ViT_explanation_generator import GradCam, LRP
+from ViT_explanation_generator import Baselines, LRP
 from ViT_new import vit_base_patch16_224
 from ViT_LRP import vit_base_patch16_224 as vit_LRP
 from ViT_orig_LRP import vit_base_patch16_224 as vit_orig_LRP
@@ -25,8 +25,6 @@ def normalize(tensor,
 
 
 def compute_saliency_and_save(args):
-    if args.method == 'fullgrad':
-        fullgrad = FullGrad(model, device)
     first = True
     with h5py.File(os.path.join(args.method_dir, 'results.hdf5'), 'a') as f:
         data_cam = f.create_dataset('vis',
@@ -70,7 +68,7 @@ def compute_saliency_and_save(args):
                 index = target
 
             if args.method == 'rollout':
-                Res = gradCam.generate_rollout(data, start_layer=1).reshape(data.shape[0], 1, 14, 14)
+                Res = baselines.generate_rollout(data, start_layer=1).reshape(data.shape[0], 1, 14, 14)
                 # Res = Res - Res.mean()
 
             elif args.method == 'lrp':
@@ -95,7 +93,7 @@ def compute_saliency_and_save(args):
                     .reshape(data.shape[0], 1, 14, 14)
 
             elif args.method == 'attn_gradcam':
-                Res = gradCam.generate_cam_attn(data, index=index).reshape(data.shape[0], 1, 14, 14)
+                Res = baselines.generate_cam_attn(data, index=index).reshape(data.shape[0], 1, 14, 14)
 
             if args.method != 'full_lrp' and args.method != 'input_grads':
                 Res = torch.nn.functional.interpolate(Res, scale_factor=16, mode='bilinear').cuda()
@@ -142,9 +140,6 @@ if __name__ == "__main__":
     parser.add_argument('--no-reg', action='store_true',
                         default=False,
                         help='')
-    parser.add_argument('--gradcam', action='store_true',
-                        default=False,
-                        help='')
     parser.add_argument('--is-ablation', type=bool,
                         default=False,
                         help='')
@@ -181,17 +176,17 @@ if __name__ == "__main__":
 
     # Model
     model = vit_base_patch16_224(pretrained=True).cuda()
-    gradCam = GradCam(model)
+    baselines = Baselines(model)
 
     # LRP
     model_LRP = vit_LRP(pretrained=True).cuda()
     model_LRP.eval()
-    lrp = AGF(model_LRP)
+    lrp = LRP(model_LRP)
 
     # orig LRP
     model_orig_LRP = vit_orig_LRP(pretrained=True).cuda()
     model_orig_LRP.eval()
-    orig_lrp = AGF(model_orig_LRP)
+    orig_lrp = LRP(model_orig_LRP)
 
     # Dataset loader for sample images
     transform = transforms.Compose([

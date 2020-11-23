@@ -16,7 +16,7 @@ from utils.iou import IoU
 
 from data.Imagenet import Imagenet_Segmentation
 
-from ViT_explanation_generator import GradCam, LRP
+from ViT_explanation_generator import Baselines, LRP
 from ViT_new import vit_base_patch16_224
 from ViT_LRP import vit_base_patch16_224 as vit_LRP
 from ViT_orig_LRP import vit_base_patch16_224 as vit_orig_LRP
@@ -31,58 +31,6 @@ import matplotlib.pyplot as plt
 import torch.nn.functional as F
 
 plt.switch_backend('agg')
-
-
-# CLRP
-def clrp_target(output):
-    pred = output.data.max(1, keepdim=True)[1]
-    mask = torch.zeros_like(output)
-    mask.scatter_(1, pred, 1)
-
-    return mask * output
-
-
-def clrp_others(output):
-    pred = output.data.max(1, keepdim=True)[1]
-    mask = torch.ones_like(output)
-    mask.scatter_(1, pred, 0)
-    pred_out = output.gather(1, pred)
-
-    mask /= (output.shape[-1] - 1)
-
-    return mask * pred_out
-
-
-# SGLRP
-def sglrp_target(output):
-    sm_pred = torch.softmax(output, dim=1)
-    pred = output.data.max(1, keepdim=True)[1]
-    mask = torch.zeros_like(output)
-    mask.scatter_(1, pred, 1)
-
-    return mask * (sm_pred * (1 - sm_pred) + 1e-8)
-
-
-def sglrp_others(output):
-    sm_pred = torch.softmax(output, dim=1)
-    pred = output.data.max(1, keepdim=True)[1]
-    mask = torch.ones_like(output)
-    mask.scatter_(1, pred, 0)
-    sm_pred_out = sm_pred.gather(1, pred)
-
-    return mask * sm_pred_out * sm_pred
-
-
-# RAP
-def compute_pred(output):
-    pred = output.data.max(1, keepdim=True)[1]
-    T = pred.squeeze().cpu().numpy()
-    T = np.expand_dims(T, 0)
-    T = (T[:, np.newaxis] == np.arange(1000)) * 1.0
-    T = torch.from_numpy(T).type(torch.FloatTensor)
-    Tt = T.to(device)
-
-    return Tt
 
 
 # hyperparameters
@@ -177,8 +125,6 @@ if not os.path.exists(args.exp_np_path):
     os.makedirs(args.exp_np_path)
 
 # Data
-# normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-#                                  std=[0.229, 0.224, 0.225])
 normalize = transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
 test_img_trans = transforms.Compose([
     transforms.Resize((224, 224)),
@@ -195,17 +141,17 @@ dl = DataLoader(ds, batch_size=batch_size, shuffle=False, num_workers=1, drop_la
 
 # Model
 model = vit_base_patch16_224(pretrained=True).cuda()
-gradCam = GradCam(model)
+baselines = Baselines(model)
 
 # LRP
 model_LRP = vit_LRP(pretrained=True).cuda()
 model_LRP.eval()
-lrp = AGF(model_LRP)
+lrp = LRP(model_LRP)
 
 # orig LRP
 model_orig_LRP = vit_orig_LRP(pretrained=True).cuda()
 model_orig_LRP.eval()
-orig_lrp = AGF(model_orig_LRP)
+orig_lrp = LRP(model_orig_LRP)
 
 metric = IoU(2, ignore_index=-1)
 
@@ -245,7 +191,7 @@ def eval_batch(image, labels, evaluator, index):
     predictions = evaluator(image)
 
     if args.method == 'rollout':
-        Res = gradCam.generate_rollout(image.cuda(), start_layer=1).reshape(batch_size, 1, 14, 14)
+        Res = baselines.generate_rollout(image.cuda(), start_layer=1).reshape(batch_size, 1, 14, 14)
         # Res = Res - Res.mean()
 
     elif args.method == 'lrp':
@@ -274,26 +220,19 @@ def eval_batch(image, labels, evaluator, index):
         Res = orig_lrp.generate_LRP(image.cuda(), method="second_layer", is_ablation=args.is_ablation)\
             .reshape(batch_size, 1, 14, 14)
 
-    elif args.method == 'v_gradcam':
-        Res = gradCam.generate_cam_v(image.cuda()).reshape(batch_size, 1, 14, 14)
-
     elif args.method == 'attn_gradcam':
-        Res = gradCam.generate_cam_attn(image.cuda()).reshape(batch_size, 1, 14, 14)
+        Res = baselines.generate_cam_attn(image.cuda()).reshape(batch_size, 1, 14, 14)
 
     elif args.method == 'gradcam':
-        Res = gradCam.generate_gradcam(image.cuda()).reshape(batch_size, 1, 14, 14)
+        Res = baselines.generate_gradcam(image.cuda()).reshape(batch_size, 1, 14, 14)
 
     elif args.method == 'input_grad':
-        Res = gradCam.generate_input_grad(image.cuda()).reshape(batch_size, 1, 224, 224)
+        Res = baselines.generate_input_grad(image.cuda()).reshape(batch_size, 1, 224, 224)
 
 
     if args.method != 'full_lrp' and args.method != 'input_grad':
         Res = torch.nn.functional.interpolate(Res, scale_factor=16, mode='bilinear').cuda()
     Res = (Res - Res.min()) / (Res.max() - Res.min())
-    # Res = Res.reshape(224,224)
-    # Res_img = Res_img.data.cpu().numpy().astype(np.uint8)
-    # import cv2
-    # ret, th = cv2.threshold(Res_img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     if args.method != 'input_grad':
         ret = Res.mean()

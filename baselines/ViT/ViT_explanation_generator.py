@@ -45,7 +45,7 @@ class LRP:
 
 
 
-class GradCam:
+class Baselines:
     def __init__(self, model):
         self.model = model
         self.model.eval()

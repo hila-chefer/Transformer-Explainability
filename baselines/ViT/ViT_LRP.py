@@ -354,7 +354,6 @@ class VisionTransformer(nn.Module):
             return cam
 
         elif method == "grad":
-            # LRP gradcam - x*dx with rollout
             cams = []
             for blk in self.blocks:
                 grad = blk.attn.get_attn_gradients()

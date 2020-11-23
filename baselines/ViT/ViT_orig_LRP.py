@@ -3,17 +3,12 @@ Hacked together by / Copyright 2020 Ross Wightman
 """
 import torch
 import torch.nn as nn
-from functools import partial
 from einops import rearrange
 from modules.layers_lrp import *
-from ViT_explanation_generator import GradCam, LRP
-import numpy as np
 
 from baselines.ViT.helpers import load_pretrained
 from baselines.ViT.weight_init import trunc_normal_
 from baselines.ViT.layer_helpers import to_2tuple
-import cv2
-import torchvision.transforms as transforms
 
 
 def _cfg(url='', **kwargs):
@@ -359,7 +354,6 @@ class VisionTransformer(nn.Module):
             return cam
 
         elif method == "grad":
-            # LRP gradcam - x*dx with rollout
             cams = []
             for blk in self.blocks:
                 grad = blk.attn.get_attn_gradients()
