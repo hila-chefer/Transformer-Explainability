@@ -67,8 +67,8 @@ parser.add_argument('--train_dataset', type=str, default='imagenet', metavar='N'
                     help='Testing Dataset')
 parser.add_argument('--method', type=str,
                     default='grad_rollout',
-                    choices=[ 'rollout', 'lrp','grad_lrp', 'full_lrp', 'v_gradcam', 'lrp_last_layer', 'lrp_second_layer',
-                              'attn_last_layer', 'attn_gradcam', 'gradcam', 'input_grad'],
+                    choices=[ 'rollout', 'lrp','grad_lrp', 'full_lrp', 'lrp_last_layer', 
+                              'attn_last_layer', 'attn_gradcam'],
                     help='')
 parser.add_argument('--thr', type=float, default=0.,
                     help='threshold')
@@ -95,9 +95,7 @@ parser.add_argument('--no-reg', action='store_true',
 parser.add_argument('--is-ablation', type=bool,
                     default=False,
                     help='')
-parser.add_argument('--gradcam', action='store_true',
-                    default=False,
-                    help='')
+parser.add_argument('--imagenet-seg-path', type=str, required=True)
 args = parser.parse_args()
 
 args.checkname = args.method + '_' + args.arc
@@ -135,7 +133,7 @@ test_lbl_trans = transforms.Compose([
     transforms.Resize((224, 224), Image.NEAREST),
 ])
 
-ds = Imagenet_Segmentation('path_to_imagenet_seg',
+ds = Imagenet_Segmentation(args.imagenet_seg_path,
                            transform=test_img_trans, target_transform=test_lbl_trans)
 dl = DataLoader(ds, batch_size=batch_size, shuffle=False, num_workers=1, drop_last=False)
 
@@ -216,19 +214,8 @@ def eval_batch(image, labels, evaluator, index):
             .reshape(batch_size, 1, 14, 14)
         # Res = Res - Res.mean()
 
-    elif args.method == 'lrp_second_layer':
-        Res = orig_lrp.generate_LRP(image.cuda(), method="second_layer", is_ablation=args.is_ablation)\
-            .reshape(batch_size, 1, 14, 14)
-
     elif args.method == 'attn_gradcam':
         Res = baselines.generate_cam_attn(image.cuda()).reshape(batch_size, 1, 14, 14)
-
-    elif args.method == 'gradcam':
-        Res = baselines.generate_gradcam(image.cuda()).reshape(batch_size, 1, 14, 14)
-
-    elif args.method == 'input_grad':
-        Res = baselines.generate_input_grad(image.cuda()).reshape(batch_size, 1, 224, 224)
-
 
     if args.method != 'full_lrp' and args.method != 'input_grad':
         Res = torch.nn.functional.interpolate(Res, scale_factor=16, mode='bilinear').cuda()

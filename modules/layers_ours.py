@@ -99,7 +99,6 @@ class Add(RelPropSimple):
         return torch.add(*inputs)
 
     def relprop(self, R, alpha):
-        print("in our add!")
         Z = self.forward(self.X)
         S = safe_divide(R, Z)
         C = self.gradprop(Z, self.X, S)
