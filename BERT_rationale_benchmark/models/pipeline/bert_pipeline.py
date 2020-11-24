@@ -436,11 +436,11 @@ def main():
         # explainability
         explanations = Generator(test_classifier)
         explanations_orig_lrp = Generator(orig_lrp_classifier)
-        method = "partial_lrp"
-        method_folder = {"grad_lrp": "ours", "partial_lrp": "partial_lrp", "last_attn": "last_attn",
+        method = "transformer_attribution"
+        method_folder = {"transformer_attribution": "ours", "partial_lrp": "partial_lrp", "last_attn": "last_attn",
                          "attn_gradcam": "attn_gradcam", "lrp": "lrp", "rollout": "rollout",
                          "ground_truth": "ground_truth", "generate_all": "generate_all"}
-        method_expl = {"grad_lrp": explanations.generate_LRP,
+        method_expl = {"transformer_attribution": explanations.generate_LRP,
                        "partial_lrp": explanations_orig_lrp.generate_LRP_last_layer,
                        "last_attn": explanations_orig_lrp.generate_attn_last_layer,
                        "attn_gradcam": explanations_orig_lrp.generate_attn_gradcam,
@@ -476,9 +476,9 @@ def main():
                     GT_global = os.path.join(args.output_dir, '{0}/visual_results_{1}.pdf').format(
                              method_folder["ground_truth"], j)
                     GT_ours = os.path.join(args.output_dir, '{0}/{1}_GT_{2}_{3}.pdf').format(
-                             method_folder["grad_lrp"], j, classification, is_classification_correct)
+                             method_folder["transformer_attribution"], j, classification, is_classification_correct)
                     CF_ours = os.path.join(args.output_dir, '{0}/{1}_CF.pdf').format(
-                             method_folder["grad_lrp"], j)
+                             method_folder["transformer_attribution"], j)
                     GT_partial = os.path.join(args.output_dir, '{0}/{1}_GT_{2}_{3}.pdf').format(
                         method_folder["partial_lrp"], j, classification, is_classification_correct)
                     CF_partial = os.path.join(args.output_dir, '{0}/{1}_CF.pdf').format(
@@ -553,7 +553,7 @@ def main():
                 generate(text, cam_target,
                          (os.path.join(args.output_dir, '{0}/{1}_GT_{2}_{3}.tex').format(
                              method_folder[method], j, classification, is_classification_correct)))
-                if method in ["grad_lrp", "partial_lrp", "attn_gradcam", "lrp"]:
+                if method in ["transformer_attribution", "partial_lrp", "attn_gradcam", "lrp"]:
                     cam_false_class = method_expl[method](input_ids=input_ids, attention_mask=attention_masks, index=1-target_idx)[0]
                     cam_false_class = cam_false_class.clamp(min=0)
                     generate(text, cam_false_class,

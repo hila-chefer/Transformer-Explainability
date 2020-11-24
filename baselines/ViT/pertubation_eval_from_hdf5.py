@@ -151,7 +151,7 @@ if __name__ == "__main__":
                         help='')
     parser.add_argument('--method', type=str,
                         default='grad_rollout',
-                        choices=['rollout', 'lrp', 'grad_lrp', 'full_lrp', 'v_gradcam', 'lrp_last_layer',
+                        choices=['rollout', 'lrp', 'transformer_attribution', 'full_lrp', 'v_gradcam', 'lrp_last_layer',
                                  'lrp_second_layer', 'gradcam',
                                  'attn_last_layer', 'attn_gradcam', 'input_grads'],
                         help='')

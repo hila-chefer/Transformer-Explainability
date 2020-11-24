@@ -75,7 +75,7 @@ def compute_saliency_and_save(args):
                 Res = lrp.generate_LRP(data, start_layer=1, index=index).reshape(data.shape[0], 1, 14, 14)
                 # Res = Res - Res.mean()
 
-            elif args.method == 'grad_lrp':
+            elif args.method == 'transformer_attribution':
                 Res = lrp.generate_LRP(data, start_layer=1, method="grad", index=index).reshape(data.shape[0], 1, 14, 14)
                 # Res = Res - Res.mean()
 
@@ -109,7 +109,7 @@ if __name__ == "__main__":
                         help='')
     parser.add_argument('--method', type=str,
                         default='grad_rollout',
-                        choices=['rollout', 'lrp', 'grad_lrp', 'full_lrp', 'lrp_last_layer',
+                        choices=['rollout', 'lrp', 'transformer_attribution', 'full_lrp', 'lrp_last_layer',
                                  'attn_last_layer', 'attn_gradcam'],
                         help='')
     parser.add_argument('--lmd', type=float,

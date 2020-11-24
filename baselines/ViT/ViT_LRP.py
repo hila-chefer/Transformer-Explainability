@@ -321,7 +321,7 @@ class VisionTransformer(nn.Module):
         x = self.head(x)
         return x
 
-    def relprop(self, cam=None,method="grad", is_ablation=False, start_layer=0, **kwargs):
+    def relprop(self, cam=None,method="transformer_attribution", is_ablation=False, start_layer=0, **kwargs):
         # print(kwargs)
         # print("conservation 1", cam.sum())
         cam = self.head.relprop(cam, **kwargs)
@@ -352,8 +352,9 @@ class VisionTransformer(nn.Module):
             cam = compute_rollout_attention(attn_cams, start_layer=start_layer)
             cam = cam[:, 0, 1:]
             return cam
-
-        elif method == "grad":
+        
+        # our method, method name grad is legacy
+        elif method == "transformer_attribution" or method == "grad":
             cams = []
             for blk in self.blocks:
                 grad = blk.attn.get_attn_gradients()

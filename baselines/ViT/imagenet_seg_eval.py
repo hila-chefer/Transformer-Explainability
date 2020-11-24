@@ -67,7 +67,7 @@ parser.add_argument('--train_dataset', type=str, default='imagenet', metavar='N'
                     help='Testing Dataset')
 parser.add_argument('--method', type=str,
                     default='grad_rollout',
-                    choices=[ 'rollout', 'lrp','grad_lrp', 'full_lrp', 'lrp_last_layer', 
+                    choices=[ 'rollout', 'lrp','transformer_attribution', 'full_lrp', 'lrp_last_layer',
                               'attn_last_layer', 'attn_gradcam'],
                     help='')
 parser.add_argument('--thr', type=float, default=0.,
@@ -200,7 +200,7 @@ def eval_batch(image, labels, evaluator, index):
         Res = orig_lrp.generate_LRP(image.cuda(), method="full").reshape(batch_size, 1, 224, 224)
         # Res = Res - Res.mean()
 
-    elif args.method == 'grad_lrp':
+    elif args.method == 'transformer_attribution':
         Res = lrp.generate_LRP(image.cuda(), start_layer=1, method="grad").reshape(batch_size, 1, 14, 14)
         # Res = Res - Res.mean()
 
