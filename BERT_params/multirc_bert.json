@@ -1,0 +1,32 @@
+{
+    "max_length": 512,
+    "bert_vocab": "bert-base-uncased",
+    "bert_dir": "bert-base-uncased",
+    "use_evidence_sentence_identifier": 1,
+    "use_evidence_token_identifier": 0,
+    "evidence_identifier": {
+        "batch_size": 32,
+        "epochs": 10,
+        "patience": 10,
+        "warmup_steps": 50,
+        "lr": 1e-05,
+        "max_grad_norm": 1,
+        "sampling_method": "random",
+        "sampling_ratio": 1,
+        "use_half_precision": 0
+    },
+    "evidence_classifier": {
+        "classes": [
+            "False",
+            "True"
+        ],
+        "batch_size": 32,
+        "warmup_steps": 50,
+        "epochs": 10,
+        "patience": 10,
+        "lr": 1e-05,
+        "max_grad_norm": 1,
+        "sampling_method": "everything",
+        "use_half_precision": 0
+    }
+}

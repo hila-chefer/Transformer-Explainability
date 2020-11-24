@@ -1,0 +1,26 @@
+{
+    "embeddings": {
+        "embedding_file": "model_components/PubMed-w2v.bin",
+        "dropout": 0.05
+    },
+    "evidence_identifier": {
+        "mlp_size": 128,
+        "dropout": 0.05,
+        "batch_size": 768,
+        "epochs": 50,
+        "patience": 10,
+        "lr": 1e-3,
+        "sampling_method": "random",
+        "sampling_ratio": 1.0
+    },
+    "evidence_classifier": {
+        "classes": [ "significantly decreased", "no significant difference", "significantly increased" ],
+        "mlp_size": 128,
+        "dropout": 0.05,
+        "batch_size": 768,
+        "epochs": 50,
+        "patience": 10,
+        "lr": 1e-3,
+        "sampling_method": "everything"
+    }
+}

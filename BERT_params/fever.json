@@ -1,0 +1,26 @@
+{
+    "embeddings": {
+        "embedding_file": "model_components/glove.6B.200d.txt",
+        "dropout": 0.05
+    },
+    "evidence_identifier": {
+        "mlp_size": 128,
+        "dropout": 0.05,
+        "batch_size": 768,
+        "epochs": 50,
+        "patience": 10,
+        "lr": 1e-3,
+        "sampling_method": "random",
+        "sampling_ratio": 1.0
+    },
+    "evidence_classifier": {
+        "classes": [ "SUPPORTS", "REFUTES" ],
+        "mlp_size": 128,
+        "dropout": 0.05,
+        "batch_size": 768,
+        "epochs": 50,
+        "patience": 10,
+        "lr": 1e-5,
+        "sampling_method": "everything"
+    }
+}

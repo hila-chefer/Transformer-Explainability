@@ -1,0 +1,22 @@
+{
+    "embeddings": {
+        "embedding_file": "model_components/PubMed-w2v.bin",
+        "dropout": 0.2
+    },
+    "classifier": {
+        "classes": [ "significantly decreased", "no significant difference", "significantly increased" ],
+        "use_token_selection": 1,
+        "has_query": 1,
+        "hidden_size": 32,
+        "mlp_size": 128,
+        "dropout": 0.2,
+        "batch_size": 16,
+        "epochs": 50,
+        "attention_epochs": 0,
+        "patience": 10,
+        "lr": 1e-3,
+        "dropout": 0.2,
+        "k_fraction": 0.013,
+        "threshold": 0.1
+    }
+}

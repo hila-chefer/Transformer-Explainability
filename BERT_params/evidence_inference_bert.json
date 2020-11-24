@@ -1,0 +1,33 @@
+{
+    "max_length": 512,
+    "bert_vocab": "allenai/scibert_scivocab_uncased",
+    "bert_dir": "allenai/scibert_scivocab_uncased",
+    "use_evidence_sentence_identifier": 1,
+    "use_evidence_token_identifier": 0,
+    "evidence_identifier": {
+        "batch_size": 10,
+        "epochs": 10,
+        "patience": 10,
+        "warmup_steps": 10,
+        "lr": 1e-05,
+        "max_grad_norm": 1,
+        "sampling_method": "random",
+        "use_half_precision": 0,
+        "sampling_ratio": 1
+    },
+    "evidence_classifier": {
+        "classes": [
+            "significantly decreased",
+            "no significant difference",
+            "significantly increased"
+        ],
+        "batch_size": 10,
+        "warmup_steps": 10,
+        "epochs": 10,
+        "patience": 10,
+        "lr": 1e-05,
+        "max_grad_norm": 1,
+        "sampling_method": "everything",
+        "use_half_precision": 0
+    }
+}

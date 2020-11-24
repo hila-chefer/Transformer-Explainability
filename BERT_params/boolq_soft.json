@@ -1,0 +1,21 @@
+{
+    "embeddings": {
+        "embedding_file": "model_components/glove.6B.200d.txt",
+        "dropout": 0.2
+    },
+    "classifier": {
+        "classes": [ "False", "True" ],
+        "has_query": 1,
+        "hidden_size": 32,
+        "mlp_size": 128,
+        "dropout": 0.2,
+        "batch_size": 16,
+        "epochs": 50,
+        "attention_epochs": 50,
+        "patience": 10,
+        "lr": 1e-3,
+        "dropout": 0.2,
+        "k_fraction": 0.07,
+        "threshold": 0.1
+    }
+}
