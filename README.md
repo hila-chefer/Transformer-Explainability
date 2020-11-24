@@ -6,7 +6,7 @@
 
 Example:
 ```
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python3 baselines/ViT/imagenet_seg_eval.py --method grad_lrp --imagenet-seg-path /path/to/gtsegs_ijcv.mat
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python3 baselines/ViT/imagenet_seg_eval.py --method transformer_attribution --imagenet-seg-path /path/to/gtsegs_ijcv.mat
 
 ```
 
@@ -17,14 +17,14 @@ You must provide a path to imagenet segmentation data in `--imagenet-seg-path`.
 
 Example:
 ```
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python3 baselines/ViT/generate_visualizations.py --method grad_lrp --imagenet-validation-path /path/to/imagenet_validation_directory
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python3 baselines/ViT/generate_visualizations.py --method transformer_attribution --imagenet-validation-path /path/to/imagenet_validation_directory
 ```
 
 Notice that you can choose to visualize by target or top class by using the `--vis-cls` argument.
 
 Now to run the perturbation test run the following command:
 ```
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python3 baselines/ViT/pertubation_eval_from_hdf5.py --method grad_lrp
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python3 baselines/ViT/pertubation_eval_from_hdf5.py --method transformer_attribution
 ```
 
 Notice that you can use the `--neg` argument to run either positive or negative perturbation.
@@ -53,7 +53,7 @@ Example:
 ```
 CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python3 BERT_rationale_benchmark/models/pipeline/bert_pipeline.py --data_dir data/movies/ --output_dir bert_models/movies/ --model_params BERT_params/movies_bert.json
 ```
-To control which algorithm to use for explanations change the `method` variable in `BERT_rationale_benchmark/models/pipeline/bert_pipeline.py` (Defaults to 'grad_lrp' which is our method).
+To control which algorithm to use for explanations change the `method` variable in `BERT_rationale_benchmark/models/pipeline/bert_pipeline.py` (Defaults to 'transformer_attribution' which is our method).
 Running this command will create a directory for the method in `bert_models/movies/<method_name>`.
 
 In order to run f1 test with k, run the following command:
