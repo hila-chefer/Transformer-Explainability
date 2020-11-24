@@ -6,4 +6,6 @@ __pycache__
 run/
 baselines/ViT/experiments/
 baselines/ViT/visualizations/
+bert_models/
+data/movies/
 
