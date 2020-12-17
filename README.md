@@ -3,6 +3,7 @@
 ViT implementation is based on:
 - https://github.com/rwightman/pytorch-image-models
 - https://github.com/lucidrains/vit-pytorch
+- pretrained weights from: https://github.com/google-research/vision_transformer
 
 BERT implementation is taken from the huggingface Transformers library:
 https://huggingface.co/transformers/
