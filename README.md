@@ -1,4 +1,11 @@
-# Transformer Explainability
+# Pytorch Implementation of Transformer Interpretability Beyond Attention Visualization
+
+ViT implementation is based on:
+- https://github.com/rwightman/pytorch-image-models
+- https://github.com/lucidrains/vit-pytorch
+
+BERT implementation is taken from the huggingface Transformers library:
+https://huggingface.co/transformers/
 
 ## Reproducing results on ViT
 
