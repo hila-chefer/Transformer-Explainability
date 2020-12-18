@@ -8,6 +8,8 @@ ViT implementation is based on:
 BERT implementation is taken from the huggingface Transformers library:
 https://huggingface.co/transformers/
 
+Text visualizations in supplementary were created using TAHV heatmap generator for text: https://github.com/jiesutd/Text-Attention-Heatmap-Visualization
+
 ## Reproducing results on ViT
 
 ### Section A. Segmentation Results
