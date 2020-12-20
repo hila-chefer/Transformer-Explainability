@@ -11,7 +11,7 @@ Please notice our [jupyter notebook](https://github.com/hila-chefer/Transformer-
 
 ![alt text](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.PNG)
 
-To add another input image, simply add the image to the [samples folder](https://github.com/hila-chefer/Transformer-Explainability/tree/main/samples), and use the generate_visualization function for your selected class of interest (using the class_index={class_idx}), not specifying the index will visualize the top class.
+To add another input image, simply add the image to the [samples folder](https://github.com/hila-chefer/Transformer-Explainability/tree/main/samples), and use the `generate_visualization` function for your selected class of interest (using the `class_index={class_idx}`), not specifying the index will visualize the top class.
 
 ## Credits
 ViT implementation is based on:
