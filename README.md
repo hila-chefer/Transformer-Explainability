@@ -1,5 +1,19 @@
 # Pytorch Implementation of [Transformer Interpretability Beyond Attention Visualization](https://arxiv.org/abs/2012.09838)
 
+## Introduction
+Official implementation of [Transformer Interpretability Beyond Attention Visualization](https://arxiv.org/abs/2012.09838).
+
+We introduce a novel method which allows to visualize classifications made by a Transformer based model for both vision and NLP tasks.
+Our method also allows to visualize explanations per class.
+
+Please notice our [jupyter notebook](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.ipynb) were you can run the two class specific examples from the paper.
+
+
+![alt text](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.PNG)
+
+To add another input image, simply add the image to the [samples folder](https://github.com/hila-chefer/Transformer-Explainability/tree/main/samples), and use the generate_visualization function for your selected class of interest (using the class_index={class_idx}), not specifying the index will visualize the top class.
+
+## Credits
 ViT implementation is based on:
 - https://github.com/rwightman/pytorch-image-models
 - https://github.com/lucidrains/vit-pytorch
@@ -74,3 +88,14 @@ PYTHONPATH=./:$PYTHONPATH python3 BERT_rationale_benchmark/metrics.py --data_dir
 ```
 
 Also, in the method directory there will be created `.tex` files containing the explanations extracted for each example. This corresponds to our visualizations in the supplementary.
+
+## Citing our paper
+If you find this work useful please consider citing it:
+```
+@article{chefer2020transformerInterpretability,
+  title={Transformer Interpretability Beyond Attention Visualization},
+  author={Chefer, Hila and Gur, Shir and Wolf, Lior},
+  journal={arXiv preprint arXiv:2012.09838},
+  year={2020}
+}
+```
