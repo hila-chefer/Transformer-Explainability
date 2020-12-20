@@ -6,7 +6,7 @@ Official implementation of [Transformer Interpretability Beyond Attention Visual
 We introduce a novel method which allows to visualize classifications made by a Transformer based model for both vision and NLP tasks.
 Our method also allows to visualize explanations per class.
 
-Please notice our [jupyter notebook](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.ipynb) were you can run the two class specific examples from the paper.
+Please notice our [jupyter notebook](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.ipynb) where you can run the two class specific examples from the paper.
 
 
 ![alt text](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.PNG)
