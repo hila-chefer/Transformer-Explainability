@@ -19,7 +19,6 @@ class Imagenet_Segmentation(data.Dataset):
         self.path = path
         self.transform = transform
         self.target_transform = target_transform
-        # self.h5py = h5py.File(path, 'r+')
         self.h5py = None
         tmp = h5py.File(path, 'r')
         self.data_length = len(tmp['/value/img'])
@@ -47,7 +46,6 @@ class Imagenet_Segmentation(data.Dataset):
         return img, target
 
     def __len__(self):
-        # return len(self.h5py['/value/img'])
         return self.data_length
 
 
@@ -60,7 +58,6 @@ class ImagenetResults(data.Dataset):
 
         print('Reading dataset length...')
         with h5py.File(self.path, 'r') as f:
-            # tmp = h5py.File(self.path , 'r')
             self.data_length = len(f['/image'])
 
     def __len__(self):
