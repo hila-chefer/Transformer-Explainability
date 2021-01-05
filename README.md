@@ -2,7 +2,12 @@
 
 ## Updates
 Jan 5 2021: [A Jupyter notebook for DeiT added!](https://github.com/hila-chefer/Transformer-Explainability/blob/main/DeiT_example.ipynb)
-![alt text](https://github.com/hila-chefer/Transformer-Explainability/blob/main/DeiT.PNG)
+
+
+<p align="center">
+  <img width="300" height="460" src="https://github.com/hila-chefer/Transformer-Explainability/blob/main/DeiT.PNG">
+</p>
+
 
 ## Introduction
 Official implementation of [Transformer Interpretability Beyond Attention Visualization](https://arxiv.org/abs/2012.09838).
