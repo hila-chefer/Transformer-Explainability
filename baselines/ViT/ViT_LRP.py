@@ -367,7 +367,7 @@ class VisionTransformer(nn.Module):
             rollout = compute_rollout_attention(cams, start_layer=start_layer)
             cam = rollout[:, 0, 1:]
             return cam
-
+            
         elif method == "last_layer":
             cam = self.blocks[-1].attn.get_attn_cam()
             cam = cam[0].reshape(-1, cam.shape[-1], cam.shape[-1])
@@ -407,7 +407,6 @@ def _conv_filter(state_dict, patch_size=16):
         out_dict[k] = v
     return out_dict
 
-
 def vit_base_patch16_224(pretrained=False, **kwargs):
     model = VisionTransformer(
         patch_size=16, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True, **kwargs)
@@ -423,4 +422,16 @@ def vit_large_patch16_224(pretrained=False, **kwargs):
     model.default_cfg = default_cfgs['vit_large_patch16_224']
     if pretrained:
         load_pretrained(model, num_classes=model.num_classes, in_chans=kwargs.get('in_chans', 3))
+    return model
+
+def deit_base_patch16_224(pretrained=False, **kwargs):
+    model = VisionTransformer(
+        patch_size=16, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True, **kwargs)
+    model.default_cfg = _cfg()
+    if pretrained:
+        checkpoint = torch.hub.load_state_dict_from_url(
+            url="https://dl.fbaipublicfiles.com/deit/deit_base_patch16_224-b5f2ef4d.pth",
+            map_location="cpu", check_hash=True
+        )
+        model.load_state_dict(checkpoint["model"])
     return model
