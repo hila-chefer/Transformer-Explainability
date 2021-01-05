@@ -1,12 +1,16 @@
 # Pytorch Implementation of [Transformer Interpretability Beyond Attention Visualization](https://arxiv.org/abs/2012.09838)
 
+## Updates
+Jan 5 2021: [A Jupyter notebook for DeiT added!](https://github.com/hila-chefer/Transformer-Explainability/blob/main/DeiT_example.ipynb)
+![alt text](https://github.com/hila-chefer/Transformer-Explainability/blob/main/DeiT.PNG)
+
 ## Introduction
 Official implementation of [Transformer Interpretability Beyond Attention Visualization](https://arxiv.org/abs/2012.09838).
 
 We introduce a novel method which allows to visualize classifications made by a Transformer based model for both vision and NLP tasks.
 Our method also allows to visualize explanations per class.
 
-Please notice our [jupyter notebook](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.ipynb) where you can run the two class specific examples from the paper.
+Please notice our [Jupyter notebook](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.ipynb) where you can run the two class specific examples from the paper.
 
 
 ![alt text](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.PNG)
