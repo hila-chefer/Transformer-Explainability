@@ -196,8 +196,8 @@ class Linear(nn.Linear, RelProp):
         def f(w1, w2, x1, x2):
             Z1 = F.linear(x1, w1)
             Z2 = F.linear(x2, w2)
-            S1 = safe_divide(R, Z1 + Z2)
-            S2 = safe_divide(R, Z2 + Z2)
+            S1 = safe_divide(R, Z1)
+            S2 = safe_divide(R, Z2)
             C1 = x1 * torch.autograd.grad(Z1, x1, S1)[0]
             C2 = x2 * torch.autograd.grad(Z2, x2, S2)[0]
 
