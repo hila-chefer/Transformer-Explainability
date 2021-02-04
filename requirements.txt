@@ -9,7 +9,7 @@ async-timeout=3.0.1=py37_0
 attrs=20.3.0=pyhd3eb1b0_0
 backcall=0.2.0=py_0
 blas=1.0=mkl
-bleach=3.2.1=pypi_0
+bleach>=3.3.0=pypi_0
 boto=2.49.0=py37_0
 boto3=1.9.66=py37_0
 botocore=1.12.67=py37_0
