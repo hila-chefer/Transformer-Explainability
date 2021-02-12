@@ -23,7 +23,7 @@ cffi=1.14.3=py37h261ae71_2
 chardet=3.0.4=py37he5f6b98_1008
 click=7.1.2=pyh9f0ad1d_0
 cloudpickle=1.6.0=py_0
-cryptography=3.2.1=py37hc72a4ac_0
+cryptography>=3.3.2=py37hc72a4ac_0
 cudatoolkit=10.1.243=h6bb024c_0
 cycler=0.10.0=py37_0
 cython=0.29.21=py37h2531618_0
