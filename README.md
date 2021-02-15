@@ -16,7 +16,7 @@ We introduce a novel method which allows to visualize classifications made by a 
 Our method also allows to visualize explanations per class.
 
 <p align="center">
-  <img width="600" height="250" src="https://github.com/hila-chefer/Transformer-Explainability/blob/main/method-page-001.jpg">
+  <img width="600" height="200" src="https://github.com/hila-chefer/Transformer-Explainability/blob/main/method-page-001.jpg">
 </p>
 Method consists of 3 phases:
 
