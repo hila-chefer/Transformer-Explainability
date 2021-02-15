@@ -1,4 +1,4 @@
-# Pytorch Implementation of [Transformer Interpretability Beyond Attention Visualization](https://arxiv.org/abs/2012.09838)
+# PyTorch Implementation of [Transformer Interpretability Beyond Attention Visualization](https://arxiv.org/abs/2012.09838)
 
 ## Updates
 Jan 5 2021: [A Jupyter notebook for DeiT added!](https://github.com/hila-chefer/Transformer-Explainability/blob/main/DeiT_example.ipynb)
@@ -14,6 +14,17 @@ Official implementation of [Transformer Interpretability Beyond Attention Visual
 
 We introduce a novel method which allows to visualize classifications made by a Transformer based model for both vision and NLP tasks.
 Our method also allows to visualize explanations per class.
+
+<p align="center">
+  <img width="600" height="250" src="https://github.com/hila-chefer/Transformer-Explainability/blob/main/method-page-001.jpg">
+</p>
+Method consists of 3 phases:
+
+1. Calculating relevance for each attention matrix using our novel formulation of LRP.
+
+2. Backpropagation of gradients for each attention matrix w.r.t. the visualized class. Gradients are used to average attention heads.
+
+3. Layer aggregation with rollout.
 
 Please notice our [Jupyter notebook](https://github.com/hila-chefer/Transformer-Explainability/blob/main/example.ipynb) where you can run the two class specific examples from the paper.
 
