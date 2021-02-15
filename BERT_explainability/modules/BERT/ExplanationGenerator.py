@@ -2,17 +2,16 @@ import argparse
 import numpy as np
 import torch
 import glob
-import networkx as nx
 
+# compute rollout between attention layers
 def compute_rollout_attention(all_layer_matrices, start_layer=0):
-    # adding residual consideration
+    # adding residual consideration- code adapted from https://github.com/samiraabnar/attention_flow
     num_tokens = all_layer_matrices[0].shape[1]
     batch_size = all_layer_matrices[0].shape[0]
     eye = torch.eye(num_tokens).expand(batch_size, num_tokens, num_tokens).to(all_layer_matrices[0].device)
     all_layer_matrices = [all_layer_matrices[i] + eye for i in range(len(all_layer_matrices))]
-    # matrices_aug = [all_layer_matrices[i] / all_layer_matrices[i].sum(dim=-1, keepdim=True)
-    #                       for i in range(len(all_layer_matrices))]
-    matrices_aug = all_layer_matrices
+    matrices_aug = [all_layer_matrices[i] / all_layer_matrices[i].sum(dim=-1, keepdim=True)
+                          for i in range(len(all_layer_matrices))]
     joint_attention = matrices_aug[start_layer]
     for i in range(start_layer+1, len(matrices_aug)):
         joint_attention = matrices_aug[i].bmm(joint_attention)
@@ -110,31 +109,6 @@ class Generator:
         output = self.model(input_ids=input_ids, attention_mask=attention_mask)[0]
         cam = self.model.bert.encoder.layer[-1].attention.self.get_attn()[0]
         cam = cam.mean(dim=0).unsqueeze(0)
-        cam[:, 0, 0] = 0
-        return cam[:, 0]
-
-
-    def generate_LRP_second_layer(self, input_ids, attention_mask,
-                     index=None):
-        output = self.model(input_ids=input_ids, attention_mask=attention_mask)[0]
-        kwargs = {"alpha": 1}
-
-        if index == None:
-            index = np.argmax(output.cpu().data.numpy(), axis=-1)
-
-        one_hot = np.zeros((1, output.size()[-1]), dtype=np.float32)
-        one_hot[0, index] = 1
-        one_hot_vector = one_hot
-        one_hot = torch.from_numpy(one_hot).requires_grad_(True)
-        one_hot = torch.sum(one_hot.cuda() * output)
-
-        self.model.zero_grad()
-        one_hot.backward(retain_graph=True)
-
-        self.model.relprop(torch.tensor(one_hot_vector).to(input_ids.device), **kwargs)
-
-        cam = self.model.bert.encoder.layer[1].attention.self.get_attn_cam()[0]
-        cam = cam.clamp(min=0).mean(dim=0)
         cam[:, 0, 0] = 0
         return cam[:, 0]
 

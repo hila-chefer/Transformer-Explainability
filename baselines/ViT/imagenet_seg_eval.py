@@ -21,10 +21,6 @@ from ViT_new import vit_base_patch16_224
 from ViT_LRP import vit_base_patch16_224 as vit_LRP
 from ViT_orig_LRP import vit_base_patch16_224 as vit_orig_LRP
 
-
-# from captum.attr import GradientShap, DeepLiftShap, ShapleyValueSampling, FeatureAblation
-# from baselines.blur_pertub import BlurPertub
-
 from sklearn.metrics import precision_recall_curve
 import matplotlib.pyplot as plt
 
@@ -172,7 +168,6 @@ def compute_pred(output):
 
 
 def eval_batch(image, labels, evaluator, index):
-    print("eval batch labels", labels.shape)
     evaluator.zero_grad()
     # Save input image
     if args.save_img:
@@ -187,44 +182,41 @@ def eval_batch(image, labels, evaluator, index):
 
     image = image.requires_grad_()
     predictions = evaluator(image)
-
+    
+    # segmentation test for the rollout baseline
     if args.method == 'rollout':
         Res = baselines.generate_rollout(image.cuda(), start_layer=1).reshape(batch_size, 1, 14, 14)
-        # Res = Res - Res.mean()
-
-    elif args.method == 'lrp':
-        Res = lrp.generate_LRP(image.cuda(), start_layer=1, method="rollout").reshape(batch_size, 1, 14, 14)
-        # Res = Res - Res.mean()
-
+    
+    # segmentation test for the LRP baseline (this is full LRP, not partial)
     elif args.method == 'full_lrp':
         Res = orig_lrp.generate_LRP(image.cuda(), method="full").reshape(batch_size, 1, 224, 224)
-        # Res = Res - Res.mean()
-
+    
+    # segmentation test for our method
     elif args.method == 'transformer_attribution':
-        Res = lrp.generate_LRP(image.cuda(), start_layer=1, method="grad").reshape(batch_size, 1, 14, 14)
-        # Res = Res - Res.mean()
-
+        Res = lrp.generate_LRP(image.cuda(), start_layer=1, method="transformer_attribution").reshape(batch_size, 1, 14, 14)
+    
+    # segmentation test for the partial LRP baseline (last attn layer)
     elif args.method == 'lrp_last_layer':
         Res = orig_lrp.generate_LRP(image.cuda(), method="last_layer", is_ablation=args.is_ablation)\
             .reshape(batch_size, 1, 14, 14)
-        # Res = Res - Res.mean()
-
+    
+    # segmentation test for the raw attention baseline (last attn layer)
     elif args.method == 'attn_last_layer':
         Res = orig_lrp.generate_LRP(image.cuda(), method="last_layer_attn", is_ablation=args.is_ablation)\
             .reshape(batch_size, 1, 14, 14)
-        # Res = Res - Res.mean()
-
+    
+    # segmentation test for the GradCam baseline (last attn layer)
     elif args.method == 'attn_gradcam':
         Res = baselines.generate_cam_attn(image.cuda()).reshape(batch_size, 1, 14, 14)
 
-    if args.method != 'full_lrp' and args.method != 'input_grad':
+    if args.method != 'full_lrp':
+        # interpolate to full image size (224,224)
         Res = torch.nn.functional.interpolate(Res, scale_factor=16, mode='bilinear').cuda()
+    
+    # threshold between FG and BG is the mean    
     Res = (Res - Res.min()) / (Res.max() - Res.min())
 
-    if args.method != 'input_grad':
-        ret = Res.mean()
-    else:
-        ret = 0
+    ret = Res.mean()
 
     Res_1 = Res.gt(ret).type(Res.type())
     Res_0 = Res.le(ret).type(Res.type())

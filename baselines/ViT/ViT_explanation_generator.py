@@ -3,9 +3,9 @@ import torch
 import numpy as np
 from numpy import *
 
-
+# compute rollout between attention layers
 def compute_rollout_attention(all_layer_matrices, start_layer=0):
-    # adding residual consideration
+    # adding residual consideration- code adapted from https://github.com/samiraabnar/attention_flow
     num_tokens = all_layer_matrices[0].shape[1]
     batch_size = all_layer_matrices[0].shape[0]
     eye = torch.eye(num_tokens).expand(batch_size, num_tokens, num_tokens).to(all_layer_matrices[0].device)
@@ -22,11 +22,7 @@ class LRP:
         self.model = model
         self.model.eval()
 
-    def forward(self, input):
-        return self.model(input.cuda())
-
-    def generate_LRP(self, input, index=None, method="grad", is_ablation=False, start_layer=0):
-        input = input
+    def generate_LRP(self, input, index=None, method="transformer_attribution", is_ablation=False, start_layer=0):
         output = self.model(input)
         kwargs = {"alpha": 1}
         if index == None:
@@ -51,13 +47,7 @@ class Baselines:
         self.model = model
         self.model.eval()
 
-        self.input_grad = None
-
-    def forward(self, input):
-        return self.model(input.cuda())
-
     def generate_cam_attn(self, input, index=None):
-        input = input.cuda()
         output = self.model(input.cuda(), register_hook=True)
         if index == None:
             index = np.argmax(output.cpu().data.numpy())
@@ -82,8 +72,6 @@ class Baselines:
         #################### attn
 
     def generate_rollout(self, input, start_layer=0):
-        input = input
-        self.model.zero_grad()
         self.model(input)
         blocks = self.model.blocks
         all_layer_attentions = []
@@ -93,18 +81,3 @@ class Baselines:
             all_layer_attentions.append(avg_heads)
         rollout = compute_rollout_attention(all_layer_attentions, start_layer=start_layer)
         return rollout[:,0, 1:]
-
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--use-cuda', action='store_true', default=True,
-                        help='Use NVIDIA GPU acceleration')
-    parser.add_argument('--image-path', type=str, default='./examples/both.png',
-                        help='Input image path')
-    args = parser.parse_args()
-    args.use_cuda = args.use_cuda and torch.cuda.is_available()
-    if args.use_cuda:
-        print("Using GPU for acceleration")
-    else:
-        print("Using CPU for computation")
-
-    return args
