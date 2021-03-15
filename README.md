@@ -3,6 +3,8 @@
 ## Updates
 Feb 28 2021: Our paper was accepted to CVPR 2021! 
 
+March 15 2021: [A Colab notebook for BERT for sentiment analysis added!](https://github.com/hila-chefer/Transformer-Explainability/blob/main/BERT_explainability.ipynb)
+
 Feb 17 2021: [A Colab notebook with all examples added!](https://github.com/hila-chefer/Transformer-Explainability/blob/main/Transformer_explainability.ipynb)
 
 Jan 5 2021: [A Jupyter notebook for DeiT added!](https://github.com/hila-chefer/Transformer-Explainability/blob/main/DeiT_example.ipynb)
