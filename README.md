@@ -2,6 +2,13 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hila-chefer/Transformer-Explainability/blob/main/Transformer_explainability.ipynb)
 ## Updates
 
+## [Check out our latest work!](https://github.com/hila-chefer/Transformer-MM-Explainability)
+* We remove LRP for a simple and quick solution!
+* We expand our work to *any* type of Transformer- not just self-attention based encoders, but also co-attention encoders and encoder-decoders!
+* We show that VQA models can actually understand both image and text and make connections!
+* We use a DETR object detector and create segmentation masks from our explanations!
+* We provide a colab notebook with all the examples. You can very easily add images and questions of your own!
+
 March 15 2021: [A Colab notebook for BERT for sentiment analysis added!](https://colab.research.google.com/github/hila-chefer/Transformer-Explainability/blob/main/BERT_explainability.ipynb)
 
 Feb 28 2021: Our paper was accepted to CVPR 2021! 
