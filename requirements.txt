@@ -13,4 +13,4 @@ torchvision == 0.8.1
 tqdm == 4.51.0
 transformers == 3.5.1
 utils == 1.0.1
-pygments == 2.7.2
+Pygments>=2.7.4
