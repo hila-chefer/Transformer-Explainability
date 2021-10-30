@@ -139,12 +139,14 @@ PYTHONPATH=./:$PYTHONPATH python3 BERT_rationale_benchmark/metrics.py --data_dir
 Also, in the method directory there will be created `.tex` files containing the explanations extracted for each example. This corresponds to our visualizations in the supplementary.
 
 ## Citing our paper
-If you find this work useful please consider citing it:
+If you make use of our work, please cite our paper:
 ```
-@article{chefer2020transformerInterpretability,
-  title={Transformer Interpretability Beyond Attention Visualization},
-  author={Chefer, Hila and Gur, Shir and Wolf, Lior},
-  journal={arXiv preprint arXiv:2012.09838},
-  year={2020}
+@InProceedings{Chefer_2021_CVPR,
+    author    = {Chefer, Hila and Gur, Shir and Wolf, Lior},
+    title     = {Transformer Interpretability Beyond Attention Visualization},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month     = {June},
+    year      = {2021},
+    pages     = {782-791}
 }
 ```
