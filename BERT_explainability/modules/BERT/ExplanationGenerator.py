@@ -55,7 +55,7 @@ class Generator:
             cam = cam.clamp(min=0).mean(dim=0)
             cams.append(cam.unsqueeze(0))
         rollout = compute_rollout_attention(cams, start_layer=start_layer)
-        rollout[:, 0, 0] = 0
+        rollout[:, 0, 0] = rollout[:, 0].min()
         return rollout[:, 0]
 
 
