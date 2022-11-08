@@ -1,5 +1,6 @@
 from transformers import BertPreTrainedModel
 from transformers.utils import logging
+from transformers.modeling_outputs import SequenceClassifierOutput
 from BERT_explainability.modules.layers_ours import *
 from BERT_explainability.modules.BERT.BERT import BertModel
 from torch.nn import CrossEntropyLoss, MSELoss
