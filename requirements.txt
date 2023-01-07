@@ -3,7 +3,7 @@ einops == 0.3.0
 h5py == 2.8.0
 imageio == 2.9.0
 matplotlib == 3.3.2
-opencv_python == 3.4.2.17
+opencv_python == 3.4.0.14
 scikit_image == 0.17.2
 scipy == 1.5.2
 sklearn
